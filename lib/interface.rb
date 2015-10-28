@@ -5,20 +5,20 @@ require 'routing_table'
 
 # Router network interface
 class Interface
-  attr_reader :hwaddr
-  attr_reader :ipaddr
+  attr_reader :mac_address
+  attr_reader :ip_address
   attr_reader :masklen
   attr_reader :port
 
   def initialize(options)
     @port = options[:port]
-    @hwaddr = Pio::Mac.new(options[:hwaddr])
-    @ipaddr = Pio::IPv4Address.new(options[:ipaddr])
+    @mac_address = Pio::Mac.new(options[:mac_address])
+    @ip_address = Pio::IPv4Address.new(options[:ip_address])
     @masklen = options[:masklen]
   end
 
   def has?(mac)
-    mac == hwaddr
+    mac == mac_address
   end
 end
 
@@ -37,22 +37,22 @@ class Interfaces
     end
   end
 
-  def find_by_ipaddr(ipaddr)
+  def find_by_ip_address(ip_address)
     @list.find do |each|
-      each.ipaddr == ipaddr
+      each.ip_address == ip_address
     end
   end
 
-  def find_by_prefix(ipaddr)
+  def find_by_prefix(ip_address)
     @list.find do |each|
       masklen = each.masklen
-      each.ipaddr.mask(masklen) == ipaddr.mask(masklen)
+      each.ip_address.mask(masklen) == ip_address.mask(masklen)
     end
   end
 
-  def find_by_port_and_ipaddr(port, ipaddr)
+  def find_by_port_and_ip_address(port, ip_address)
     @list.find do |each|
-      each.port == port && each.ipaddr == ipaddr
+      each.port == port && each.ip_address == ip_address
     end
   end
 

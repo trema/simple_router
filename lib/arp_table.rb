@@ -1,52 +1,26 @@
-# ARP table entry
-class ArpEntry
-  attr_reader :port
-  attr_reader :hwaddr
-  attr_writer :age_max
-
-  def initialize(port, hwaddr, age_max)
-    @port = port
-    @hwaddr = hwaddr
-    @age_max = age_max
-    @last_updated = Time.now
-  end
-
-  def update(port, hwaddr)
-    @port = port
-    @hwaddr = hwaddr
-    @last_updated = Time.now
-  end
-
-  def aged_out?
-    Time.now - @last_updated > @age_max
-  end
-end
-
 # ARP table
 class ArpTable
-  DEFAULT_AGE_MAX = 300
+  # ARP table entry
+  class ArpEntry
+    attr_reader :port_number
+    attr_reader :mac_address
+
+    def initialize(port_number, mac_address)
+      @port_number = port_number
+      @mac_address = mac_address
+    end
+  end
 
   def initialize
     @db = {}
   end
 
-  def update(port, ipaddr, hwaddr)
-    entry = @db[ipaddr.to_i]
-    if entry
-      entry.update(port, hwaddr)
-    else
-      new_entry = ArpEntry.new(port, hwaddr, DEFAULT_AGE_MAX)
-      @db[ipaddr.to_i] = new_entry
-    end
+  def update(port_number, ip_address, mac_address)
+    return if @db[ip_address.to_i]
+    @db[ip_address.to_i] = ArpEntry.new(port_number, mac_address)
   end
 
-  def lookup(ipaddr)
-    @db[ipaddr.to_i]
-  end
-
-  def age
-    @db.delete_if do |_ipaddr, entry|
-      entry.aged_out?
-    end
+  def lookup(ip_address)
+    @db[ip_address.to_i]
   end
 end

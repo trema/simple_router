@@ -47,9 +47,9 @@ class SimpleRouter < Trema::Controller
   def handle_arp_request(datapath_id, message)
     port = message.in_port
     destination_mac = message.data.target_protocol_address
-    interface = @interfaces.find_by_port_and_ipaddr(port, destination_mac)
+    interface = @interfaces.find_by_port_and_ip_address(port, destination_mac)
     return unless interface
-    arp_reply = create_arp_reply_from(message, interface.hwaddr)
+    arp_reply = create_arp_reply_from(message, interface.mac_address)
     packet_out_raw(datapath_id, arp_reply, SendOutPort.new(interface.port))
   end
 
@@ -77,7 +77,7 @@ class SimpleRouter < Trema::Controller
   # rubocop:enable MethodLength
 
   def should_forward?(message)
-    !@interfaces.find_by_ipaddr(message.data.ip_destination_address)
+    !@interfaces.find_by_ip_address(message.data.ip_destination_address)
   end
 
   def handle_icmpv4_echo_request(datapath_id, message)
@@ -102,8 +102,8 @@ class SimpleRouter < Trema::Controller
 
     arp_entry = @arp_table.lookup(next_hop)
     if arp_entry
-      macsa = interface.hwaddr
-      macda = arp_entry.hwaddr
+      macsa = interface.mac_address
+      macda = arp_entry.mac_address
       action = create_action_from(macsa, macda, interface.port)
       flow_mod(datapath_id, message, action)
       packet_out(datapath_id, message, action)
@@ -147,8 +147,8 @@ class SimpleRouter < Trema::Controller
     )
   end
 
-  def handle_unresolved_packet(datapath_id, interface, ipaddr)
-    arp_request = create_arp_request_from(interface, ipaddr)
+  def handle_unresolved_packet(datapath_id, interface, ip_address)
+    arp_request = create_arp_request_from(interface, ip_address)
     packet_out_raw(datapath_id, arp_request, SendOutPort.new(interface.port))
   end
 
@@ -161,8 +161,8 @@ class SimpleRouter < Trema::Controller
   end
 
   def create_arp_request_from(interface, addr)
-    Arp::Request.new(source_mac: interface.hwaddr,
-                     sender_protocol_address: interface.ipaddr,
+    Arp::Request.new(source_mac: interface.mac_address,
+                     sender_protocol_address: interface.ip_address,
                      target_protocol_address: addr).to_binary
   end
 
