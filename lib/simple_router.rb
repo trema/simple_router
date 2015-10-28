@@ -15,8 +15,7 @@ class SimpleRouter < Trema::Controller
 
   def switch_ready(datapath_id)
     logger.info "#{datapath_id.to_hex} is connected"
-    @switche = datapath_id
-    init_flows(datapath_id)
+    send_flow_mod_delete(datapath_id, match: Match.new)
   end
 
   # rubocop:disable MethodLength
@@ -37,10 +36,6 @@ class SimpleRouter < Trema::Controller
   # rubocop:enable MethodLength
 
   private
-
-  def init_flows(datapath_id)
-    send_flow_mod_delete(datapath_id, match: Match.new)
-  end
 
   def to_me?(message)
     return true if message.destination_mac.broadcast?
