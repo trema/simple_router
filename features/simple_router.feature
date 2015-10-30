@@ -1,5 +1,5 @@
 Feature: Simple router
-  Scenario: Run
+  Background:
     Given a file named "trema.conf" with:
       """
       vswitch('0x1') { dpid 0x1 }
@@ -16,6 +16,22 @@ Feature: Simple router
       link '0x1', 'host1'
       link '0x1', 'host2'
       """
-    And I trema run "lib/simple_router.rb" with the configuration "trema.conf"
+    And I trema run "lib/simple_router.rb" interactively with the configuration "trema.conf"
     And I run `sleep 8`
+    When I run `bundle exec trema netns host1` interactively
 
+  @sudo
+  Scenario: ping router's interface
+    When I type "ping 192.168.1.1 -c 3"
+    Then the output from "bundle exec trema netns host1" should contain:
+      """
+      3 packets transmitted, 2 received, 33% packet loss
+      """
+
+  @sudo
+  Scenario: ping another host
+    When I type "ping 192.168.2.2 -c 3"
+    Then the output from "bundle exec trema netns host1" should contain:
+      """
+      3 packets transmitted, 1 received, 66% packet loss
+      """
