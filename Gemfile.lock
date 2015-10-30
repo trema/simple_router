@@ -5,9 +5,23 @@ GEM
     astrolabe (1.3.1)
       parser (~> 2.2)
     bindata (2.1.0)
+    builder (3.2.2)
     coderay (1.1.0)
+    cucumber (2.1.0)
+      builder (>= 2.1.2)
+      cucumber-core (~> 1.3.0)
+      diff-lcs (>= 1.1.3)
+      gherkin3 (~> 3.1.0)
+      multi_json (>= 1.7.5, < 2.0)
+      multi_test (>= 0.1.2)
+    cucumber-core (1.3.0)
+      gherkin3 (~> 3.1.0)
+    diff-lcs (1.2.5)
+    gherkin3 (3.1.2)
     gli (2.13.2)
     method_source (0.8.2)
+    multi_json (1.11.2)
+    multi_test (0.1.2)
     parser (2.2.3.0)
       ast (>= 1.1, < 3.0)
     phut (0.7.0)
@@ -40,6 +54,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cucumber
   rubocop
   trema
 
