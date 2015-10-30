@@ -8,5 +8,8 @@ group :development, :test do
 end
 
 group :metrics do
+  gem 'flay', require: false
+  gem 'flog', require: false
+  gem 'reek', require: false
   gem 'rubocop', require: false
 end
