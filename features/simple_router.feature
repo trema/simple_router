@@ -17,7 +17,7 @@ Feature: Simple router
       link '0x1', 'host2'
       """
     And I trema run "lib/simple_router.rb" interactively with the configuration "trema.conf"
-    And I run `sleep 8`
+    And I run `sleep 10`
     When I run `bundle exec trema netns host1` interactively
 
   @sudo
@@ -25,7 +25,7 @@ Feature: Simple router
     When I type "ping 192.168.1.1 -c 3"
     Then the output from "bundle exec trema netns host1" should contain:
       """
-      3 packets transmitted, 2 received, 33% packet loss
+      3 packets transmitted, 3 received, 0% packet loss
       """
 
   @sudo
@@ -33,5 +33,5 @@ Feature: Simple router
     When I type "ping 192.168.2.2 -c 3"
     Then the output from "bundle exec trema netns host1" should contain:
       """
-      3 packets transmitted, 1 received, 66% packet loss
+      3 packets transmitted, 3 received, 0% packet loss
       """
