@@ -7,7 +7,7 @@ Simple Router
 [![Dependency Status](http://img.shields.io/gemnasium/trema/simple_router.svg?style=flat)][gemnasium]
 [![Inline docs](http://inch-ci.org/github/trema/simple_router.png?branch=develop)][inch]
 
-An OpenFlow controller that emulates layer 2 switches.
+An OpenFlow controller that emulates layer 3 switch (router).
 
 [travis]: http://travis-ci.org/trema/simple_router
 [coveralls]: https://coveralls.io/r/trema/simple_router
