@@ -1,5 +1,5 @@
-Learning Switch
-===============
+Simple Router
+=============
 
 [![Build Status](http://img.shields.io/travis/trema/simple_router/develop.svg?style=flat)][travis]
 [![Coverage Status](http://img.shields.io/coveralls/trema/simple_router/develop.svg?style=flat)][coveralls]
