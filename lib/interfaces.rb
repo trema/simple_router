@@ -15,6 +15,14 @@ class Interface
     @ip_address = IPv4Address.new(options.fetch(:ip_address))
     @netmask_length = options.fetch(:netmask_length)
   end
+
+  def network_address
+    ip_address.mask netmask_length
+  end
+
+  def netmask
+    IPv4Address.new('255.255.255.255').mask(netmask_length)
+  end
 end
 
 # List of network interfaces
@@ -23,6 +31,10 @@ class Interfaces
     @list = interfaces.map do |each|
       Interface.new(each)
     end
+  end
+
+  def each(&block)
+    @list.each(&block)
   end
 
   def find_by(queries)
